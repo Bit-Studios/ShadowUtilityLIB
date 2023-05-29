@@ -9,6 +9,7 @@ using RTG;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using static ShadowUtilityLIB.AppBar;
 using Image = UnityEngine.UI.Image;
 using Logger = ShadowUtilityLIB.logging.Logger;
 
@@ -149,13 +150,27 @@ namespace ShadowUtilityLIB
             GameStateChangedMessage gameStateChangedMessage = messageCenterMessage as GameStateChangedMessage;
             GameStateConfiguration gameStateConfiguration = GameManager.Instance.Game.GlobalGameState.GetGameState();
             barButtons.ForEach(barButton =>{
-                if (gameStateConfiguration.IsObjectAssembly && barButton.Buttons[0] == true && barButton.createdOab == false)
+                if (GameObject.Find($"Flight-{barButton.ID}"))
                 {
-                    bool runagain = barButton.AddOAB();
+
                 }
-                if (gameStateConfiguration.IsFlightMode && barButton.Buttons[1] == true && barButton.createdFlight == false)
+                else
                 {
-                    ShadowUtilityLIBMod.RunCr(barButton.AddFlight());
+                    if (gameStateConfiguration.IsFlightMode && barButton.Buttons[1] == true)
+                    {
+                        ShadowUtilityLIBMod.RunCr(barButton.AddFlight());
+                    }
+                }
+                if (GameObject.Find($"OAB-{barButton.ID}"))
+                {
+
+                }
+                else
+                {
+                    if (gameStateConfiguration.IsObjectAssembly && barButton.Buttons[0] == true)
+                    {
+                        bool runagain = barButton.AddOAB();
+                    }
                 }
             });
         }

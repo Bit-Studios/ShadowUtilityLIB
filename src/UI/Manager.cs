@@ -1,5 +1,12 @@
 ﻿using UnityEngine.UIElements;
 using ShadowUtilityLIB.logging;
+using UnityEngine;
+using Logger = ShadowUtilityLIB.logging.Logger;
+using BepInEx;
+using System.Drawing.Printing;
+using KSP.Game.Flow;
+using Newtonsoft.Json;
+using UitkForKsp2;
 
 namespace ShadowUtilityLIB.UI
 {
@@ -7,8 +14,10 @@ namespace ShadowUtilityLIB.UI
     {
         private static Logger logger = new Logger(ShadowUtilityLIBMod.ModName, ShadowUtilityLIBMod.ModVersion);
         public Dictionary<string, UIDocument> Windows { get; set; }
+        public int arbitrary_Limitation_because_of_an_update_to_uitk_that_limits_screen_size_due_to_space_warp_being_shit___Width = 1920;
+        public int arbitrary_Limitation_because_of_an_update_to_uitk_that_limits_screen_size_due_to_space_warp_being_shit___height = 1080;
         public Manager()
-        {
+        { 
             try
             {
                 Windows = new Dictionary<string, UIDocument>();
