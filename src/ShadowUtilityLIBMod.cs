@@ -16,13 +16,13 @@ using UnityEngine.UIElements;
 namespace ShadowUtilityLIB;
 public class CoroutineExecuter : MonoBehaviour { }
 
-[BepInPlugin("com.shadowdev.utilitylib", "Shadow Utility LIB", "0.0.3")]
+[BepInPlugin("com.shadowdev.utilitylib", "Shadow Utility LIB", "0.0.4")]
 [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
 {
     public const string ModId = "com.shadowdev.utilitylib";
     public const string ModName = "Shadow Utility Lib";
-    public const string ModVersion = "0.0.3";
+    public const string ModVersion = "0.0.4";
     public static bool IsDev = false;
     private static Logger logger = new Logger(ModName, ModVersion);
     private static CoroutineExecuter instance;

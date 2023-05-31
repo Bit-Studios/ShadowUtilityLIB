@@ -11,8 +11,8 @@ namespace ShadowUtilityLIB.UI
     {
         private static Logger logger = new Logger(ShadowUtilityLIBMod.ModName, ShadowUtilityLIBMod.ModVersion);
         public Dictionary<string, UIDocument> Windows { get; set; }
-        public int arbitrary_Limitation_because_of_an_update_to_uitk_that_limits_screen_size_due_to_space_warp_being_shit___Width = 1920;
-        public int arbitrary_Limitation_because_of_an_update_to_uitk_that_limits_screen_size_due_to_space_warp_being_shit___height = 1080;
+        public int WidthScaleLimit = 1920;
+        public int HeightScaleLimit = 1080;
         public static PanelSettings PanelSettings { get; internal set; }
         public Manager()
         {
@@ -27,9 +27,16 @@ namespace ShadowUtilityLIB.UI
         }
         public void Add(string name, UIDocument document)
         {
+            Add(name, document, true);
+        }
+        public void Add(string name, UIDocument document,bool noScale = true)
+        {
             try
             {
-                document.panelSettings = PanelSettings;
+                if (noScale)
+                {
+                    document.panelSettings = PanelSettings;
+                }
                 Windows.Add(name, document);
             }
             catch (Exception e)
