@@ -10,6 +10,8 @@ using UnityEngine.UI;
 using SpaceWarp.API.Assets;
 using ShadowUtilityLIB.UI;
 using HarmonyLib;
+using UitkForKsp2;
+using UnityEngine.UIElements;
 
 namespace ShadowUtilityLIB;
 public class CoroutineExecuter : MonoBehaviour { }
@@ -29,6 +31,11 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
     public static bool runALlogo = false;
     public override void OnInitialized()
     {
+        var panelSettings = AssetManager.GetAsset<PanelSettings>($"{SpaceWarpMetadata.ModID}/shadowutilitylib/theme/panelsettings.asset");
+        panelSettings.m_AtlasBlitShader = UitkForKsp2Plugin.PanelSettings.m_AtlasBlitShader;
+        panelSettings.m_RuntimeShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeShader;
+        panelSettings.m_RuntimeWorldShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeWorldShader;
+        Manager.PanelSettings = panelSettings;
 
         instance = new GameObject("CoroutineExecuter").AddComponent<CoroutineExecuter>();
         try
@@ -40,10 +47,10 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
             logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
         }
         GameManager.Instance.Game.Messages.Subscribe<GameStateChangedMessage>(AppBar.StateChange);
-        
+
         logger.Log($"Initialized");
-        
-        
+
+
         Initilised = true;
     }
     public static void EnableDebugMode()
@@ -57,7 +64,7 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
     }
     void Awake()
     {
-        
+
         try
         {
             if (Directory.Exists("./logs")) { }
@@ -76,7 +83,7 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
             File.Move($"./{logFileLocation}", $"./logs/{logFileLocation}{DateTime.Now.ToFileTimeUtc().ToString()}.sl");
             logger.Debug(logFileLocation);
         }
-        
+
         logger.Log($"Awake");
     }
 }
