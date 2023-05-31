@@ -13,8 +13,9 @@ namespace ShadowUtilityLIB.UI
         public Dictionary<string, UIDocument> Windows { get; set; }
         public int arbitrary_Limitation_because_of_an_update_to_uitk_that_limits_screen_size_due_to_space_warp_being_shit___Width = 1920;
         public int arbitrary_Limitation_because_of_an_update_to_uitk_that_limits_screen_size_due_to_space_warp_being_shit___height = 1080;
+        public static PanelSettings PanelSettings { get; internal set; }
         public Manager()
-        { 
+        {
             try
             {
                 Windows = new Dictionary<string, UIDocument>();
@@ -28,6 +29,7 @@ namespace ShadowUtilityLIB.UI
         {
             try
             {
+                document.panelSettings = PanelSettings;
                 Windows.Add(name, document);
             }
             catch (Exception e)
@@ -95,7 +97,7 @@ namespace ShadowUtilityLIB.UI
             {
                 logger.Error($"{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}");
             }
-            
+
         }
         public static void SetLabel(string labelName, float fontsize)
         {
