@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SpaceWarp.API.Assets;
 using ShadowUtilityLIB.UI;
+using HarmonyLib;
 
 namespace ShadowUtilityLIB;
 public class CoroutineExecuter : MonoBehaviour { }
@@ -28,11 +29,21 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
     public static bool runALlogo = false;
     public override void OnInitialized()
     {
-        logger.Debug($"{DateTime.Now.Date.ToString()}");
+
         instance = new GameObject("CoroutineExecuter").AddComponent<CoroutineExecuter>();
+        try
+        {
+            Harmony.CreateAndPatchAll(typeof(DropdownUtils));
+        }
+        catch (Exception e)
+        {
+            logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+        }
         GameManager.Instance.Game.Messages.Subscribe<GameStateChangedMessage>(AppBar.StateChange);
         
         logger.Log($"Initialized");
+        
+        
         Initilised = true;
     }
     public static void EnableDebugMode()
