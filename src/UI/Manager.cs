@@ -2,14 +2,12 @@
 using Logger = ShadowUtilityLIB.logging.Logger;
 using HarmonyLib;
 using static UnityEngine.UIElements.GenericDropdownMenu;
-using Newtonsoft.Json;
-using Shapes;
 
 namespace ShadowUtilityLIB.UI
 {
     public class Manager
     {
-        private static Logger logger = new Logger(ShadowUtilityLIBMod.ModName, ShadowUtilityLIBMod.ModVersion);
+        private static Logger logger = new Logger(ShadowUtilityLIBMod.ModId, "");
         public Dictionary<string, UIDocument> Windows { get; set; }
         public int WidthScaleLimit = 1920;
         public int HeightScaleLimit = 1080;
@@ -85,7 +83,7 @@ namespace ShadowUtilityLIB.UI
     public static class DropdownUtils
     {
         public static Dictionary<string,float> LabelsToChange = new Dictionary<string,float>();
-        private static Logger logger = new Logger(ShadowUtilityLIBMod.ModName, ShadowUtilityLIBMod.ModVersion);
+        private static Logger logger = new Logger(ShadowUtilityLIBMod.ModId, "");
 
         [HarmonyPatch(typeof(GenericDropdownMenu))]
         [HarmonyPatch("AddItem", new Type[] { typeof(string), typeof(bool), typeof(bool), typeof(object) })]

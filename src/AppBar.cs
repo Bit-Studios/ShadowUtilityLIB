@@ -1,5 +1,4 @@
-﻿using EdyCommonTools;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KSP.Api.CoreTypes;
 using KSP.Game;
 using KSP.Messages;
@@ -17,9 +16,9 @@ namespace ShadowUtilityLIB
 {
     public static class AppBar
     {
-        private static Logger logger = new Logger(ShadowUtilityLIBMod.ModName, ShadowUtilityLIBMod.ModVersion);
+        private static Logger logger = new Logger(ShadowUtilityLIBMod.ModId,"");
         private static string OABlocation = "OAB(Clone)/HUDSpawner/HUD/widget_SideBar/widget_sidebarNav";
-        private static string FlightLocation = "GameManager/Default Game Instance(Clone)/UI Manager(Clone)/Popup Canvas/Container/ButtonBar";
+        private static string FlightLocation = "GameManager/Default Game Instance(Clone)/UI Manager(Clone)/Scaled Popup Canvas/Container/ButtonBar";
         public class BarButton
         {
             public Texture2D FlightIcon { get; set; }

@@ -24,8 +24,8 @@
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
 		<PackageReference Include="HarmonyX" Version="2.10.1" />
 		<PackageReference Include="SpaceWarp" Version="1.2.0" />
-		<PackageReference Include="UnityEngine.Modules" Version="2020.3.33.1" Publicize="true"/>
-		<PackageReference Include="UnityEngine.UITK" Version="2020.3.33.1" Publicize="true"/>
-		<PackageReference Include="UitkForKsp2" Version="1.1.0" />
+		<PackageReference Include="UnityEngine.Modules" Version="2020.3.33.1" Publicize="true" />
+		<PackageReference Include="UnityEngine.UITK" Version="2020.3.33.1" Publicize="true" />
+		<PackageReference Include="UitkForKsp2" Version="1.2.0" />
 	</ItemGroup>
 </Project>

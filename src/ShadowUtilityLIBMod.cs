@@ -1,43 +1,69 @@
-﻿using SpaceWarp.API.Mods;
-using SpaceWarp;
-using BepInEx;
-using Logger = ShadowUtilityLIB.logging.Logger;
+﻿using Logger = ShadowUtilityLIB.logging.Logger;
 using KSP.Game;
 using KSP.Messages;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using SpaceWarp.API.Assets;
 using ShadowUtilityLIB.UI;
 using HarmonyLib;
 using UitkForKsp2;
 using UnityEngine.UIElements;
+using KSP.Modding;
+using BepInEx;
+using SpaceWarp.API.Mods;
+using SpaceWarp.API.Assets;
+using SpaceWarp;
 
 namespace ShadowUtilityLIB;
 public class CoroutineExecuter : MonoBehaviour { }
 
-[BepInPlugin("com.shadowdev.utilitylib", "Shadow Utility LIB", "0.0.4")]
+[BepInPlugin("com.shadowdev.utilitylib", "shadowutilitylib", "0.0.7")]
 [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
 {
-    public const string ModId = "com.shadowdev.utilitylib";
-    public const string ModName = "Shadow Utility Lib";
-    public const string ModVersion = "0.0.4";
+    public const string ModId = "shadowutilitylib";
     public static bool IsDev = false;
-    private static Logger logger = new Logger(ModName, ModVersion);
+    private static Logger logger = new Logger(ModId, "0.1.0");
     private static CoroutineExecuter instance;
     public static bool Initilised = false;
     public static Texture2D MIcon { get; set; }
     public static bool runALlogo = false;
-    public override void OnInitialized()
+    
+    public static void EnableDebugMode()
     {
-        var panelSettings = AssetManager.GetAsset<PanelSettings>($"{SpaceWarpMetadata.ModID}/shadowutilitylib/theme/panelsettings.asset");
-        panelSettings.m_AtlasBlitShader = UitkForKsp2Plugin.PanelSettings.m_AtlasBlitShader;
-        panelSettings.m_RuntimeShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeShader;
-        panelSettings.m_RuntimeWorldShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeWorldShader;
-        Manager.PanelSettings = panelSettings;
+        IsDev = true;
+        logger.Debug("Debug Mode Enabled");
+    }
+    public static void RunCr(IEnumerator cr)
+    {
+        try
+        {
+            instance.StartCoroutine(cr);
+        }
+        catch (Exception e)
+        {
+            logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+            instance = new GameObject("CoroutineExecuter").AddComponent<CoroutineExecuter>();
+            instance.StartCoroutine(cr);
+        }
+        
+    }
+    void OnInitialized()
+    {
+        try
+        {
+            var panelSettings = AssetManager.GetAsset<PanelSettings>($"shadowutilitylib/shadowutilitylib/theme/panelsettings.asset");
+            panelSettings.m_AtlasBlitShader = UitkForKsp2Plugin.PanelSettings.m_AtlasBlitShader;
+            panelSettings.m_RuntimeShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeShader;
+            panelSettings.m_RuntimeWorldShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeWorldShader;
+            Manager.PanelSettings = panelSettings;
 
-        instance = new GameObject("CoroutineExecuter").AddComponent<CoroutineExecuter>();
+            instance = new GameObject("CoroutineExecuter").AddComponent<CoroutineExecuter>();
+        }
+        catch (Exception e)
+        {
+            logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+        }
         try
         {
             Harmony.CreateAndPatchAll(typeof(DropdownUtils));
@@ -49,22 +75,6 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
         GameManager.Instance.Game.Messages.Subscribe<GameStateChangedMessage>(AppBar.StateChange);
 
         logger.Log($"Initialized");
-
-
-        Initilised = true;
-    }
-    public static void EnableDebugMode()
-    {
-        IsDev = true;
-        logger.Debug("Debug Mode Enabled");
-    }
-    public static void RunCr(IEnumerator cr)
-    {
-        instance.StartCoroutine(cr);
-    }
-    void Awake()
-    {
-
         try
         {
             if (Directory.Exists("./logs")) { }
@@ -83,7 +93,8 @@ public sealed class ShadowUtilityLIBMod : BaseSpaceWarpPlugin
             File.Move($"./{logFileLocation}", $"./logs/{logFileLocation}{DateTime.Now.ToFileTimeUtc().ToString()}.sl");
             logger.Debug(logFileLocation);
         }
-
+        foreach (var fi in new DirectoryInfo($"./logs/").GetFiles().OrderByDescending(x => x.LastWriteTime).Skip(5))
+            fi.Delete();
         logger.Log($"Awake");
     }
 }
