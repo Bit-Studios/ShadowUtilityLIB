@@ -17,7 +17,7 @@ namespace ShadowUtilityLIB
     public static class AppBar
     {
         private static Logger logger = new Logger(ShadowUtilityLIBMod.ModId,"");
-        private static string OABlocation = "OAB(Clone)/HUDSpawner/HUD/widget_SideBar/widget_sidebarNav";
+        private static string OABlocation = "OAB(Clone)/HUDSpawner/HUD/widget_SideBar/widget_sidebarNav/";
         private static string FlightLocation = "GameManager/Default Game Instance(Clone)/UI Manager(Clone)/Scaled Popup Canvas/Container/ButtonBar";
         public class BarButton
         {
@@ -146,32 +146,41 @@ namespace ShadowUtilityLIB
         }
         public static void StateChange(MessageCenterMessage messageCenterMessage)
         {
-            GameStateChangedMessage gameStateChangedMessage = messageCenterMessage as GameStateChangedMessage;
-            GameStateConfiguration gameStateConfiguration = GameManager.Instance.Game.GlobalGameState.GetGameState();
-            barButtons.ForEach(barButton =>{
-                if (GameObject.Find($"Flight-{barButton.ID}"))
+            try
+            {
+                GameStateChangedMessage gameStateChangedMessage = messageCenterMessage as GameStateChangedMessage;
+                GameStateConfiguration gameStateConfiguration = GameManager.Instance.Game.GlobalGameState.GetGameState();
+                barButtons.ForEach(barButton =>
                 {
-
-                }
-                else
-                {
-                    if (gameStateConfiguration.IsFlightMode && barButton.Buttons[1] == true)
+                    logger.Log($"{barButton.ID} {gameStateConfiguration.GameState.ToString()}");
+                    if (GameObject.Find($"Flight-{barButton.ID}"))
                     {
-                        ShadowUtilityLIBMod.RunCr(barButton.AddFlight());
-                    }
-                }
-                if (GameObject.Find($"OAB-{barButton.ID}"))
-                {
 
-                }
-                else
-                {
-                    if (gameStateConfiguration.IsObjectAssembly && barButton.Buttons[0] == true)
-                    {
-                        bool runagain = barButton.AddOAB();
                     }
-                }
-            });
+                    else
+                    {
+                        if (gameStateConfiguration.GameState == GameState.FlightView && barButton.Buttons[1] == true)
+                        {
+                            ShadowUtilityLIBMod.RunCr(barButton.AddFlight());
+                        }
+                    }
+                    if (GameObject.Find($"OAB-{barButton.ID}"))
+                    {
+
+                    }
+                    else
+                    {
+                        if (gameStateConfiguration.GameState == GameState.VehicleAssemblyBuilder && barButton.Buttons[0] == true)
+                        {
+                            bool runagain = barButton.AddOAB();
+                        }
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                logger.Error($"{e}\n{e.Message}\n{e.InnerException}\n{e.Source}\n{e.Data}\n{e.HelpLink}\n{e.HResult}\n{e.StackTrace}\n{e.TargetSite}\n{e.GetBaseException()}");
+            }
         }
     }
 }
