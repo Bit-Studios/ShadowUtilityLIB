@@ -12,7 +12,6 @@ using KSP.Modding;
 using BepInEx;
 using ShadowUtilityLIB.logging;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace ShadowUtilityLIB;
 public class CoroutineExecuter : MonoBehaviour { 
@@ -55,7 +54,7 @@ public sealed class ShadowUtilityLIBMod : BaseUnityPlugin
 public static class ShadowLIB
 {
     public const string ModId = "com.shadowdev.utilitylib";
-    public const string ModVersion = "0.0.8";
+    public const string ModVersion = "0.1.0";
     public static bool IsDev = false;
     private static Logger logger = new Logger(ModId, ModVersion);
     private static CoroutineExecuter instance;
@@ -88,11 +87,13 @@ public static class ShadowLIB
         EnableDebugMode();
         try
         {
-            //var panelSettings = AssetManager.GetAsset<PanelSettings>($"shadowutilitylib/shadowutilitylib/theme/panelsettings.asset");
-            //panelSettings.m_AtlasBlitShader = UitkForKsp2Plugin.PanelSettings.m_AtlasBlitShader;
-            //panelSettings.m_RuntimeShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeShader;
-            //panelSettings.m_RuntimeWorldShader = UitkForKsp2Plugin.PanelSettings.m_RuntimeWorldShader;
-            //Manager.PanelSettings = panelSettings;
+            var bundle = AssetBundle.LoadFromFile($"{Paths.PluginPath}/ShadowUtilityLIB/assets/bundles/shadowutilitylib.bundle");
+            if (!bundle)
+            {
+                logger.Log("Failed to load PanelSettings bundle!");
+                return;
+            }
+            Manager.PanelSettings = bundle.LoadAllAssets<PanelSettings>()[0];
             if (!CRE)
             {
                 CRE = true;
